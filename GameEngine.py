@@ -2,6 +2,7 @@ import ast
 from CharacterCreater import CharacterCreation
 
 def CreateCharacter():
+    #Open a tkinter window which will take you to file browser for you to select a character sheet pdf
     import tkinter as tk
     from tkinter.filedialog import askopenfilename
     tk.Tk().withdraw()
@@ -10,6 +11,11 @@ def CreateCharacter():
     CharacterCreation.genCha(filepath)
 
 def CollectCharacters():
+    """
+    Tries to read U_ChaShe364. 
+    If it exists, it will read the file.
+    If it doesn't, it will create a new file and read the empty one
+    """
     print("Collecting Character Sheets in U_ChaShe364.txt")
     try:
         f = open("U_ChaShe364.txt", "r")
@@ -18,6 +24,7 @@ def CollectCharacters():
         f = open("U_ChaShe364.txt", "r")
     text = f.read()
     print(text)
+    #Recognises an empty file so requests the characters and prepares a U_ChaShe364.txt
     if text == "":
         import tkinter as tk
         from tkinter.filedialog import askopenfilename
@@ -25,10 +32,11 @@ def CollectCharacters():
 
         filepath = askopenfilename()
         CharacterCreation.genCha(filepath)
-
+    #Opens the not empty character sheet list
     f = open("U_ChaShe364.txt", "r")
     Chars = f.readlines()
     print("read")
+    #Replaces string form of character to the appropriate data type
     for i in Chars:
         try:
             temp = ast.literal_eval(i)
