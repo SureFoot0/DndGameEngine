@@ -1,5 +1,6 @@
 import ast
 from CharacterCreater import CharacterCreation
+import openai
 
 def CreateCharacter():
     #Open a tkinter window which will take you to file browser for you to select a character sheet pdf
@@ -47,7 +48,19 @@ def CollectCharacters():
     return Chars
 
 def FIRSTMessage(Chars):
+    API_KEY = input("GPT API Key: ")
     Length = input("OneShot or Campaign: ")
     Theme = input("Theme: ")
     Characters = CollectCharacters()
     Message = "Create a " + Theme + "themed D&D 5e " + Length + ". There are " + str(len(Chars)) + "characters in this game. Here they are:" + str(Chars)
+    openai.api_key = API_KEY
+
+    response = openai.ChatCompletion.create(
+        model = "gpt-3.5-turbo",
+        messages = [
+            {"role":"user", "content":Message}
+        ]
+
+    )
+    assistant_response = response['choices'][0]['message']['content']
+    print("Chat-GPT", assistant_response.strip("\n").strip())
